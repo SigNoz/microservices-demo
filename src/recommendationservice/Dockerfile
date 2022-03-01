@@ -29,6 +29,8 @@ WORKDIR /recommendationservice
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
+RUN opentelemetry-bootstrap --action=install
+
 # add files into working directory
 COPY . .
 
@@ -36,4 +38,8 @@ COPY . .
 ENV PORT "8080"
 EXPOSE 8080
 
-ENTRYPOINT ["python", "/recommendationservice/recommendation_server.py"]
+# OTEL exporters
+ENV OTEL_TRACES_EXPORTER="console,otlp"
+
+# OTEL Python auto instrumentation
+ENTRYPOINT ["opentelemetry-instrument", "python", "/recommendationservice/recommendation_server.py"]
