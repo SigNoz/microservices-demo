@@ -1,14 +1,9 @@
-google-api-core==1.31.5
-google-python-cloud-debugger==2.18
-google-cloud-profiler==3.0.7
-grpcio-health-checking==1.33.2
-grpcio==1.33.2
-opencensus==0.8.0
-opencensus-ext-stackdriver==0.7.3
-opencensus-ext-grpc==0.7.1
+grpcio-health-checking==1.44.0
+grpcio==1.44.0
 python-json-logger==0.1.11
 requests==2.27.1
 urllib3==1.26.5
 rsa==4.7
 pyyaml==6.0
-protobuf==3.15.0 # transitive dependency, move when google-api is bumped safely
+opentelemetry-distro[otlp]==0.28b1
+opentelemetry-instrumentation==0.28b1
