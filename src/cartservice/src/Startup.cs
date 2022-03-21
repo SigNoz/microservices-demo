@@ -1,14 +1,13 @@
 using System;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using cartservice.cartstore;
 using cartservice.services;
+using OpenTelemetry.Trace;
 
 namespace cartservice
 {
@@ -44,6 +43,17 @@ namespace cartservice
 
             services.AddSingleton<ICartStore>(cartStore);
 
+            if (!string.IsNullOrEmpty(redisAddress))
+            {
+                services.AddOpenTelemetryTracing((builder) => builder
+                    .AddRedisInstrumentation(
+                        cartStore.GetConnection(),
+                        options => options.SetVerboseDatabaseStatements = true)
+                    .AddAspNetCoreInstrumentation()
+                    .AddGrpcClientInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddOtlpExporter());
+            }
             services.AddGrpc();
         }
 
