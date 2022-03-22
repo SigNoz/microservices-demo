@@ -19,7 +19,6 @@ If you **are** running this app on GKE, and want to re-enable Google Cloud Opera
 - name: DISABLE_STATS
 <br>
 value: "0"
-<br>
 - name: DISABLE_TRACING
 <br>
 value: "0"
