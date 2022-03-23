@@ -25,23 +25,22 @@ namespace cartservice
         public void ConfigureServices(IServiceCollection services)
         {
             string redisAddress = Configuration["REDIS_ADDR"];
-            ICartStore cartStore = null;
+            RedisCartStore cartStore = null;
             if (!string.IsNullOrEmpty(redisAddress))
             {
                 cartStore = new RedisCartStore(redisAddress);
             }
             else
             {
-                Console.WriteLine("Redis cache host(hostname+port) was not specified. Starting a cart service using local store");
-                Console.WriteLine("If you wanted to use Redis Cache as a backup store, you should provide its address via command line or REDIS_ADDR environment variable.");
-                cartStore = new LocalCartStore();
+                Console.WriteLine("Redis cache host(hostname+port) was not specified.");
+                Environment.Exit(1);
             }
 
             // Initialize the redis store
             cartStore.InitializeAsync().GetAwaiter().GetResult();
             Console.WriteLine("Initialization completed");
 
-            services.AddSingleton<ICartStore>(cartStore);
+            services.AddSingleton<RedisCartStore>(cartStore);
 
             if (!string.IsNullOrEmpty(redisAddress))
             {
