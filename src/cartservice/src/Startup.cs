@@ -40,7 +40,7 @@ namespace cartservice
             cartStore.InitializeAsync().GetAwaiter().GetResult();
             Console.WriteLine("Initialization completed");
 
-            services.AddSingleton<RedisCartStore>(cartStore);
+            services.AddSingleton<ICartStore>(cartStore);
 
             if (!string.IsNullOrEmpty(redisAddress))
             {

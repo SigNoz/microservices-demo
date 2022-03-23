@@ -44,6 +44,8 @@ build:
     context: src/frontend
   - image: adservice
     context: src/adservice
+  - image: otelcollector
+    context: src/otelcollector
   tagPolicy:
     gitCommit: {}
   local:
@@ -62,6 +64,9 @@ deploy:
     - ./kubernetes-manifests/recommendationservice.yaml
     - ./kubernetes-manifests/redis.yaml
     - ./kubernetes-manifests/shippingservice.yaml
+    - ./kubernetes-manifests/jaeger.yaml
+    - ./kubernetes-manifests/otelcollector.yaml
+
 profiles:
 # "gcb" profile allows building and pushing the images
 # on Google Container Builder without requiring docker
