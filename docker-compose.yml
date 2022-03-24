@@ -1,27 +1,5 @@
 version: '3.7'
 services:
-  jaeger:
-    image: jaegertracing/all-in-one:1.31
-    networks:
-      - online-boutique
-    restart: always
-    environment:
-      - COLLECTOR_ZIPKIN_HOST_PORT=:9411
-    ports:
-      - "5775:5775/udp"
-      - "6831:6831/udp"
-      - "6832:6832/udp"
-      - "5778:5778"
-      - "16686:16686"
-      - "14250:14250"
-      - "14268:14268"
-      - "14269:14269"
-      - "9411:9411"
-  otelcollector:
-    image: microservices-demo/otelcollector
-    networks:
-      - online-boutique
-    restart: always
   redis-cart:
     image: redis:alpine
     networks:
@@ -34,10 +12,10 @@ services:
     image: microservices-demo/adservice
     networks:
       - online-boutique
+    env_file:
+      - .common.env
     environment:
       - PORT=9555
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
-      - OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://otelcollector:4317
       - OTEL_RESOURCE_ATTRIBUTES=service.name=adservice
     ports:
       - "9555:9555"
@@ -45,9 +23,9 @@ services:
     image: microservices-demo/cartservice
     networks:
       - online-boutique
+    env_file:
+      - .common.env
     environment:
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
-      - OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://otelcollector:4317
       - OTEL_RESOURCE_ATTRIBUTES=service.name=cartservice
       - REDIS_ADDR=redis-cart:6379
     ports:
@@ -56,10 +34,10 @@ services:
     image: microservices-demo/checkoutservice
     networks:
       - online-boutique
+    env_file:
+      - .common.env
     environment:
       - PORT=5050
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
-      - OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://otelcollector:4317
       - OTEL_RESOURCE_ATTRIBUTES=service.name=checkoutservice
       - PRODUCT_CATALOG_SERVICE_ADDR=productcatalogservice:3550
       - SHIPPING_SERVICE_ADDR=shippingservice:50069
@@ -73,32 +51,32 @@ services:
     image: microservices-demo/currencyservice
     networks:
       - online-boutique
+    env_file:
+      - .common.env
     environment:
       - PORT=6969
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
-      - OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://otelcollector:4317
-      - OTEL_RESOURCE_ATTRIBUTES=service.name=checkoutservice
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=currencyservice
     ports:
       - "6969:6969"
   emailservice:
     image: microservices-demo/emailservice
     networks:
       - online-boutique
+    env_file:
+      - .common.env
     environment:
       - PORT=9090
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
-      - OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://otelcollector:4317
-      - OTEL_RESOURCE_ATTRIBUTES=service.name=checkoutservice
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=emailservice
     ports:
       - "9090:9090"
   frontend:
     image: microservices-demo/frontend
     networks:
       - online-boutique
+    env_file:
+      - .common.env
     environment:
       - PORT=8080
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
-      - OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://otelcollector:4317
       - OTEL_RESOURCE_ATTRIBUTES=service.name=frontend
       - PRODUCT_CATALOG_SERVICE_ADDR=productcatalogservice:3550
       - SHIPPING_SERVICE_ADDR=shippingservice:50051
@@ -113,10 +91,10 @@ services:
     image: microservices-demo/paymentservice
     networks:
       - online-boutique
+    env_file:
+      - .common.env
     environment:
       - PORT=50051
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
-      - OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://otelcollector:4317
       - OTEL_RESOURCE_ATTRIBUTES=service.name=paymentservice
     ports:
       - "50051:50051"
@@ -124,22 +102,22 @@ services:
     image: microservices-demo/productcatalogservice
     networks:
       - online-boutique
+    env_file:
+      - .common.env
     environment:
       - PORT=3550
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
-      - OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://otelcollector:4317
-      - OTEL_RESOURCE_ATTRIBUTES=service.name=paymentservice
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=productcatalogservice
     ports:
       - "3550:3550"
   recommendationservice:
     image: microservices-demo/recommendationservice
     networks:
       - online-boutique
+    env_file:
+      - .common.env
     environment:
       - PORT=8089
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
-      - OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://otelcollector:4317
-      - OTEL_RESOURCE_ATTRIBUTES=service.name=paymentservice
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=recommendationservice
       - PRODUCT_CATALOG_SERVICE_ADDR=productcatalogservice:3550
     ports:
       - "8089:8089"
@@ -147,21 +125,21 @@ services:
     image: microservices-demo/shippingservice
     networks:
       - online-boutique
+    env_file:
+      - .common.env
     environment:
       - PORT=50069
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
-      - OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://otelcollector:4317
-      - OTEL_RESOURCE_ATTRIBUTES=service.name=paymentservice
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=shippingservice
     ports:
       - "50069:50069"
   loadgenerator:
     image: microservices-demo/loadgenerator
     networks:
       - online-boutique
+    env_file:
+      - .common.env
     environment:
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
-      - OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://otelcollector:4317
-      - OTEL_RESOURCE_ATTRIBUTES=service.name=paymentservice
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=loadgenerator
       - FRONTEND_ADDR=frontend:8080
       - USERS=10
 
