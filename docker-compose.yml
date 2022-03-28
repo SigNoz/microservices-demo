@@ -14,6 +14,8 @@ services:
       - online-boutique
     env_file:
       - .common.env
+    extra_hosts:
+      - signoz:host-gateway
     environment:
       - PORT=9555
       - OTEL_RESOURCE_ATTRIBUTES=service.name=adservice
@@ -25,6 +27,8 @@ services:
       - online-boutique
     env_file:
       - .common.env
+    extra_hosts:
+      - signoz:host-gateway
     environment:
       - OTEL_RESOURCE_ATTRIBUTES=service.name=cartservice
       - REDIS_ADDR=redis-cart:6379
@@ -36,6 +40,8 @@ services:
       - online-boutique
     env_file:
       - .common.env
+    extra_hosts:
+      - signoz:host-gateway
     environment:
       - PORT=5050
       - OTEL_RESOURCE_ATTRIBUTES=service.name=checkoutservice
@@ -53,6 +59,8 @@ services:
       - online-boutique
     env_file:
       - .common.env
+    extra_hosts:
+      - signoz:host-gateway
     environment:
       - PORT=6969
       - OTEL_RESOURCE_ATTRIBUTES=service.name=currencyservice
@@ -64,6 +72,8 @@ services:
       - online-boutique
     env_file:
       - .common.env
+    extra_hosts:
+      - signoz:host-gateway
     environment:
       - PORT=9090
       - OTEL_RESOURCE_ATTRIBUTES=service.name=emailservice
@@ -75,8 +85,10 @@ services:
       - online-boutique
     env_file:
       - .common.env
+    extra_hosts:
+      - signoz:host-gateway
     environment:
-      - PORT=8080
+      - PORT=8090
       - OTEL_RESOURCE_ATTRIBUTES=service.name=frontend
       - PRODUCT_CATALOG_SERVICE_ADDR=productcatalogservice:3550
       - SHIPPING_SERVICE_ADDR=shippingservice:50069
@@ -86,13 +98,15 @@ services:
       - CHECKOUT_SERVICE_ADDR=checkoutservice:5050
       - AD_SERVICE_ADDR=adservice:9555
     ports:
-      - "8080:8080"
+      - "8090:8090"
   paymentservice:
     image: microservices-demo/paymentservice
     networks:
       - online-boutique
     env_file:
       - .common.env
+    extra_hosts:
+      - signoz:host-gateway
     environment:
       - PORT=50051
       - OTEL_RESOURCE_ATTRIBUTES=service.name=paymentservice
@@ -104,6 +118,8 @@ services:
       - online-boutique
     env_file:
       - .common.env
+    extra_hosts:
+      - signoz:host-gateway
     environment:
       - PORT=3550
       - OTEL_RESOURCE_ATTRIBUTES=service.name=productcatalogservice
@@ -115,6 +131,8 @@ services:
       - online-boutique
     env_file:
       - .common.env
+    extra_hosts:
+      - signoz:host-gateway
     environment:
       - PORT=8089
       - OTEL_RESOURCE_ATTRIBUTES=service.name=recommendationservice
@@ -127,6 +145,8 @@ services:
       - online-boutique
     env_file:
       - .common.env
+    extra_hosts:
+      - signoz:host-gateway
     environment:
       - PORT=50069
       - OTEL_RESOURCE_ATTRIBUTES=service.name=shippingservice
@@ -138,9 +158,11 @@ services:
       - online-boutique
     env_file:
       - .common.env
+    extra_hosts:
+      - signoz:host-gateway
     environment:
       - OTEL_RESOURCE_ATTRIBUTES=service.name=loadgenerator
-      - FRONTEND_ADDR=frontend:8080
+      - FRONTEND_ADDR=frontend:8090
       - USERS=10
 
 volumes:
