@@ -26,13 +26,13 @@ require (
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.5.0 // indirect
 	go.opentelemetry.io/otel/trace v1.5.0 // indirect
 	go.opentelemetry.io/proto/otlp v0.12.0 // indirect
-	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd // indirect
+	golang.org/x/net v0.17.0 // indirect
 	google.golang.org/genproto v0.0.0-20220222213610-43724f9ea8cf // indirect
 )
 
 require (
 	go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux v0.30.0
-	golang.org/x/sys v0.0.0-20220209214540-3681064d5158 // indirect
-	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/sys v0.13.0 // indirect
+	golang.org/x/text v0.13.0 // indirect
 	google.golang.org/protobuf v1.27.1
 )
